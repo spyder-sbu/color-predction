@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Login - Color Prediction Course</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h2>Course Login</h2>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-button">Login</button>
+            </form>
+            <p class="login-footer">
+                Don't have an account? <a href="#" id="showRegister">Register here</a>
+            </p>
+        </div>
+
+        <div class="register-box hidden">
+            <h2>Register for Course Access</h2>
+            <form id="registerForm" class="register-form">
+                <div class="form-group">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="upiId">UPI Transaction ID</label>
+                    <input type="text" id="upiId" name="upiId" required>
+                </div>
+                <button type="submit" class="register-button">Register</button>
+            </form>
+            <p class="register-footer">
+                Already have an account? <a href="#" id="showLogin">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between login and register forms
+        document.getElementById('showRegister').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.login-box').classList.add('hidden');
+            document.querySelector('.register-box').classList.remove('hidden');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector('.register-box').classList.add('hidden');
+            document.querySelector('.login-box').classList.remove('hidden');
+        });
+
+        // Handle registration
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userData = {
+                name: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                upiId: document.getElementById('upiId').value
+            };
+
+            // Store user data in localStorage (for demo purposes)
+            localStorage.setItem('userData', JSON.stringify(userData));
+            alert('Registration successful! Please login.');
+            document.querySelector('.register-box').classList.add('hidden');
+            document.querySelector('.login-box').classList.remove('hidden');
+        });
+
+        // Handle login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Get stored user data
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            
+            if (userData && userData.email === email && userData.password === password) {
+                // Successful login
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'course-content.html';
+            } else {
+                alert('Invalid email or password');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Content - Color Prediction Course</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">CourseHub</div>
+            <ul class="nav-links">
+                <li><a href="#videos">Videos</a></li>
+                <li><a href="#materials">Materials</a></li>
+                <li><a href="#support">Support</a></li>
+                <li><a href="#" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="course-content">
+        <section id="welcome">
+            <h1>Welcome to Your Course</h1>
+            <p>Start learning color prediction techniques with our comprehensive course materials.</p>
+        </section>
+
+        <section id="videos">
+            <h2>Course Videos</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="llogo.png" alt="Video 1">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>Introduction to Color Prediction</h3>
+                    <p>Learn the basics of color prediction and its applications.</p>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="llogo.png" alt="Video 2">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                    </div>
+                    <h3>Advanced Techniques</h3>
+                    <p>Master advanced color prediction strategies.</p>
+                </div>
+                <!-- Add more video cards as needed -->
+            </div>
+        </section>
+
+        <section id="materials">
+            <h2>Course Materials</h2>
+            <div class="materials-grid">
+                <div class="material-card">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>Course Guide</h3>
+                    <p>Complete guide to color prediction</p>
+                    <a href="#" class="download-button">Download</a>
+                </div>
+                <div class="material-card">
+                    <i class="fas fa-file-excel"></i>
+                    <h3>Practice Sheets</h3>
+                    <p>Worksheets for practice</p>
+                    <a href="#" class="download-button">Download</a>
+                </div>
+                <!-- Add more material cards as needed -->
+            </div>
+        </section>
+
+        <section id="support">
+            <h2>Need Help?</h2>
+            <div class="support-options">
+                <div class="support-card">
+                    <i class="fas fa-comments"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Get help anytime through our support system</p>
+                    <a href="#" class="support-button">Contact Support</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Check if user is logged in
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        // Handle logout
+        document.getElementById('logout').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
+
+        // Handle video playback
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const videoCard = this.closest('.video-card');
+                const videoTitle = videoCard.querySelector('h3').textContent;
+                alert(`Playing: ${videoTitle}`);
+                // Add actual video playback functionality here
+            });
+        });
+    </script>
+</body>
+</html> 
