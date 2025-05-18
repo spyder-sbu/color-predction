@@ -45,6 +45,15 @@
                 <div class="form-group">
                     <label for="upiId">UPI Transaction ID</label>
                     <input type="text" id="upiId" name="upiId" required>
+                    <small class="upi-help">Enter the UPI transaction ID from your payment app</small>
+                </div>
+                <div class="form-group">
+                    <label for="paymentAmount">Payment Amount (₹)</label>
+                    <input type="number" id="paymentAmount" name="paymentAmount" value="499" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">Payment Date</label>
+                    <input type="date" id="paymentDate" name="paymentDate" required>
                 </div>
                 <button type="submit" class="register-button">Register</button>
             </form>
@@ -55,6 +64,8 @@
     </div>
 
     <script>
+        const API_URL = 'http://localhost:3000/api';
+
         // Toggle between login and register forms
         document.getElementById('showRegister').addEventListener('click', function(e) {
             e.preventDefault();
@@ -69,37 +80,68 @@
         });
 
         // Handle registration
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const userData = {
+            const formData = {
                 name: document.getElementById('regName').value,
                 email: document.getElementById('regEmail').value,
                 password: document.getElementById('regPassword').value,
-                upiId: document.getElementById('upiId').value
+                upiId: document.getElementById('upiId').value,
+                paymentAmount: document.getElementById('paymentAmount').value,
+                paymentDate: document.getElementById('paymentDate').value
             };
 
-            // Store user data in localStorage (for demo purposes)
-            localStorage.setItem('userData', JSON.stringify(userData));
-            alert('Registration successful! Please login.');
-            document.querySelector('.register-box').classList.add('hidden');
-            document.querySelector('.login-box').classList.remove('hidden');
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Registration successful! Please check your email for further instructions.');
+                    document.querySelector('.register-box').classList.add('hidden');
+                    document.querySelector('.login-box').classList.remove('hidden');
+                } else {
+                    alert(data.message || 'Registration failed');
+                }
+            } catch (error) {
+                alert('Error during registration');
+            }
         });
 
         // Handle login
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Get stored user data
-            const userData = JSON.parse(localStorage.getItem('userData'));
-            
-            if (userData && userData.email === email && userData.password === password) {
-                // Successful login
-                localStorage.setItem('isLoggedIn', 'true');
-                window.location.href = 'course-content.html';
-            } else {
-                alert('Invalid email or password');
+            const formData = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store token
+                    localStorage.setItem('token', data.token);
+                    window.location.href = 'course-content.html';
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (error) {
+                alert('Error during login');
             }
         });
     </script>
